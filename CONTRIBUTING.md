@@ -41,7 +41,7 @@ Useful scripts:
 | `pnpm test` | Unit and property-based tests (Vitest) |
 | `pnpm test -- --coverage` | Tests with coverage |
 | `pnpm typecheck` | Strict TypeScript across the workspace |
-| `pnpm lint` / `pnpm format` | Biome lint + format ([why Biome](../docs/adr/0014-biome-lint-format.md)) |
+| `pnpm lint` / `pnpm format` | Biome lint + format ([why Biome](docs/adr/0014-biome-lint-format.md)) |
 | `pnpm build` | Build every package with tsup |
 | `pnpm publint` | Validate `exports`, types and dual-format builds |
 | `pnpm check:boundaries` | Fail on framework dependencies outside bindings |
@@ -54,8 +54,8 @@ Useful scripts:
 | Path | Contents |
 |---|---|
 | `packages/core` | Schemas, types, config and the headless deck engine |
-| `packages/*` | One package per seam: rank, embed, vector, adapters, stores, gestures, bindings, server, sinks, bench, cli |
-| `adapters/` | First-party source adapter packages |
+| `packages/*` | Workspace packages (17 total): `core`, `rank`, `embed`, `vector`, `store-memory`, `store-indexeddb`, `gestures`, `element`, `react`, `binding-testkit`, `bench`, `adapter-http-json`, `adapter-testkit`, `adapter-arxiv`, `adapter-openlibrary`, `adapter-themealdb`, `adapter-tmdb` |
+| `adapters/` | Compatibility pointer to first-party adapter packages in `packages/adapter-*` |
 | `registry/adapters.json` | Index of community adapters rendered by the docs site |
 | `docs/` | VitePress pages, ADRs (`docs/adr`), research notes (`docs/research`), architecture (`docs/architecture`) |
 | `rfcs/` | Design proposals |

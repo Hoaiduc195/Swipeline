@@ -1,11 +1,8 @@
 # First-party adapters
 
-Each directory here is a published `swipeline-adapter-<name>` package that maps
-one source to `Card`s. The first set is arXiv, Open Library, TheMealDB and TMDB,
-chosen because they have documented terms, stable endpoints and clear
-attribution requirements.
+First-party source adapters live under [`packages/`](../packages/) (`packages/adapter-http-json` for the generic HTTP/JSON adapter, `packages/adapter-testkit` for conformance tests, and `packages/adapter-arxiv`, `packages/adapter-openlibrary`, `packages/adapter-themealdb`, and `packages/adapter-tmdb` for specific sources). This directory is kept as a compatibility pointer and summary of adapter rules.
 
-Rules for anything in this directory:
+Rules for first-party adapter packages:
 
 - `fetch` respects rate limits, `Retry-After` and the abort signal.
 - `normalize` returns `null` for records it cannot map, never throws for one bad
