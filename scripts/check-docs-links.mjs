@@ -4,6 +4,7 @@
  * config. External URLs and pure anchors are ignored. Exits 1 and lists every
  * broken target.
  */
+import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -30,16 +31,25 @@ function walk(dir, files = []) {
   return files
 }
 
-function collectMarkdownFiles() {
-  const files = [...walk(DOCS)]
-  for (const entry of readdirSync(ROOT)) {
-    if (!entry.endsWith('.md')) continue
-    const full = join(ROOT, entry)
-    if (isFile(full)) files.push(full)
-  }
-  const adaptersReadme = join(ROOT, 'adapters', 'README.md')
+function trackedRootMarkdown(root) {
+  const out = execFileSync('git', ['ls-files', '--', '*.md'], {
+    cwd: root,
+    encoding: 'utf8',
+  })
+  return out
+    .split(/\r?\n/)
+    .filter((entry) => entry && !entry.includes('/') && !entry.includes('\\'))
+    .map((entry) => join(root, entry))
+    .filter((full) => isFile(full))
+}
+
+export function collectMarkdownFiles(root = ROOT) {
+  const docs = join(root, 'docs')
+  const files = isDir(docs) ? [...walk(docs)] : []
+  files.push(...trackedRootMarkdown(root))
+  const adaptersReadme = join(root, 'adapters', 'README.md')
   if (isFile(adaptersReadme)) files.push(adaptersReadme)
-  const packagesDir = join(ROOT, 'packages')
+  const packagesDir = join(root, 'packages')
   if (isDir(packagesDir)) {
     const pkgRootReadme = join(packagesDir, 'README.md')
     if (isFile(pkgRootReadme)) files.push(pkgRootReadme)
